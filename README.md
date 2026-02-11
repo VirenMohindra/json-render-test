@@ -1,50 +1,52 @@
-# Welcome to your Expo app 👋
+# json-render-test
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Demo app showcasing [`@json-render/react-native`](https://www.npmjs.com/package/@json-render/react-native) — a library for building React Native UIs from JSON specs.
 
-## Get started
+## What it does
 
-1. Install dependencies
+The entire UI is driven by declarative JSON specs (`specs/` directory). The app includes:
 
-   ```bash
-   npm install
-   ```
+- **Auth flow** — login/signup screens
+- **Dashboard** — stat cards, activity list with navigation
+- **Order detail** — dynamic content from route params
+- **Playground** — counter, todo list, text input, badges, switches
+- **Settings** — dark mode toggle, notification preferences
+- **Profile** — user info display
 
-2. Start the app
+All screens use a shared `SpecScreen` component that wires up state, actions, navigation, and theming from a single spec object.
 
-   ```bash
-   npx expo start
-   ```
+## Dark mode
 
-In the output, you'll find options to open the app in a
+Toggle via Settings > Dark Mode. All library components (`Heading`, `Paragraph`, `Card`, `Button`, `ListItem`, `Badge`, `TextInput`, `Switch`, `Divider`) are overridden in a custom registry (`lib/json-render/registry.tsx`) to read colors from the theme context instead of using hardcoded values.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Getting started
 
 ```bash
-npm run reset-project
+npm install
+npx expo run:ios
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Project structure
 
-## Learn more
+```
+specs/              # JSON-like UI specs (one per screen)
+specs/builders/     # helpers for headers, sections, form groups
+lib/json-render/    # app integration layer
+  registry.tsx      # custom + themed component overrides
+  SpecScreen.tsx    # connects specs to state, actions, nav, theme
+  theme/            # light/dark tokens, context, useThemedStyles
+  state/            # auth context
+  hooks/            # navigation, auth state bindings
+app/                # expo-router file-based routing
+  (auth)/           # login, signup
+  (tabs)/           # dashboard, settings, playground
+  order/[id].tsx    # dynamic order detail
+  profile.tsx       # profile screen
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Built with
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Expo](https://expo.dev) (SDK 54)
+- [expo-router](https://docs.expo.dev/router/introduction/) (file-based routing)
+- [@json-render/core](https://www.npmjs.com/package/@json-render/core) + [@json-render/react-native](https://www.npmjs.com/package/@json-render/react-native)
+- React Native 0.81
